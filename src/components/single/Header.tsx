@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { motion, useAnimation } from "framer-motion";
+import { motion, useAnimation, AnimationControls } from "framer-motion";
 
 const Header = () => {
   const controls = useAnimation();
   const [lastYPos, setLastYPos] = useState(0);
+  const [mouseTimer, setMouseTimer] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,24 +21,45 @@ const Header = () => {
 
       setLastYPos(yPos);
     };
+
+    const handleMouseMove = () => {
+      if (mouseTimer) {
+        clearTimeout(mouseTimer);
+      }
+
+      setMouseTimer(
+        setTimeout(() => {
+          controls.start({
+            y: 0,
+            transition: { ease: "easeOut", duration: 0.2 },
+          });
+        }, 5000)
+      );
+    };
+
     let requestId: number;
     const onScroll = () => {
       requestId = requestAnimationFrame(handleScroll);
     };
 
     window.addEventListener("scroll", onScroll, false);
+    window.addEventListener("mousemove", handleMouseMove, false);
 
     return () => {
       cancelAnimationFrame(requestId);
+      if (mouseTimer) {
+        clearTimeout(mouseTimer);
+      }
       window.removeEventListener("scroll", onScroll, false);
+      window.removeEventListener("mousemove", handleMouseMove, false);
     };
-  }, [lastYPos, controls]);
+  }, [lastYPos, controls, mouseTimer]);
 
   return (
     <motion.div
-      className="w-screen h-auto bg-[#1E4EAF] sticky top-0 p-6 flex justify-between items-center"
+      className="w-screen h-auto bg-[#1E4EAF] sticky top-0 p-6 flex justify-between items-center z-50"
       initial={{ y: 0 }}
-      animate={controls}
+      animate={controls as AnimationControls}
     >
       <div className="w-3/5 space-y-2">
         <h1 className="font-bold text-white">

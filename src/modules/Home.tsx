@@ -1,20 +1,29 @@
 import Header from "@/components/single/Header";
 import { Button } from "@/components/ui/button";
 import usePublicItemExists from "@/hooks/usePublicItems";
-import { Eye } from "lucide-react";
+import { Eye, Speech } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import withScreensaver from "./Screensaver";
 
 const Home = () => {
   const maxFileNumber = import.meta.env.VITE_LAST_POSTER_ID as number;
   const ids = Array.from({ length: maxFileNumber }, (_, i) => i + 1);
 
-  console.log(ids);
+  const shuffleArray = (array: number[]) => {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+  };
+  const shuffledIds = shuffleArray(ids);
 
   return (
     <div className="bg-slate-50">
       <Header />
       <div className="grid grid-cols-3 gap-4 p-6">
-        {ids.map((id) => {
+        {shuffledIds.map((id) => {
           //   check if file exists
           const imageUrl = `/poster/thumbnail/${id}.webp`;
           const imageAvailable = usePublicItemExists(imageUrl);
@@ -37,6 +46,9 @@ const Thumbnail = ({ id }: ThumbnailProps) => {
     navigate(`/poster/${id}`);
   };
 
+  const audioUrl = `/poster/audio/${id}.aac`;
+  const isSoundExist = usePublicItemExists(audioUrl);
+
   return (
     <div
       onClick={handleThumbnailClick}
@@ -49,13 +61,20 @@ const Thumbnail = ({ id }: ThumbnailProps) => {
         <Eye className="mr-2" />
         View
       </Button>
+
       <img
         className="group-hover:brightness-50 transition-all"
         src={url}
         alt="poster"
       />
+      {isSoundExist && (
+        <div className="border-2 border-white text-slate-700 bg-[#00D084] p-2 rounded-md absolute top-3 right-3 flex items-center gap-2 animate-bounce">
+          <Speech />
+          <span className="text-sm font-semibold">Audio presentation</span>
+        </div>
+      )}
     </div>
   );
 };
 
-export default Home;
+export default withScreensaver(Home);
