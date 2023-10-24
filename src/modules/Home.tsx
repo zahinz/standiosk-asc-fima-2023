@@ -9,24 +9,15 @@ const Home = () => {
   const maxFileNumber = import.meta.env.VITE_LAST_POSTER_ID as number;
   const ids = Array.from({ length: maxFileNumber }, (_, i) => i + 1);
 
-  const shuffleArray = (array: number[]) => {
-    const newArray = [...array];
-    for (let i = newArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-    }
-    return newArray;
-  };
-  const shuffledIds = shuffleArray(ids);
-
   return (
     <div className="bg-slate-50">
       <Header />
       <div className="grid grid-cols-3 gap-4 p-6">
-        {shuffledIds.map((id) => {
+        {ids.map((id) => {
           //   check if file exists
           const imageUrl = `/poster/thumbnail/${id}.webp`;
           const imageAvailable = usePublicItemExists(imageUrl);
+
           if (!imageAvailable) {
             return null;
           }
@@ -56,7 +47,7 @@ const Thumbnail = ({ id }: ThumbnailProps) => {
     >
       <Button
         variant="outline"
-        className="z-50 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all"
+        className="z-40 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all"
       >
         <Eye className="mr-2" />
         View
@@ -68,8 +59,11 @@ const Thumbnail = ({ id }: ThumbnailProps) => {
         alt="poster"
         loading="lazy"
       />
+      <div className="h-[40px] w-[40px] flex justify-center items-center font-bold border-2 bg-[#1E4EAF] text-white rounded-md absolute top-3 left-3">
+        {id}
+      </div>
       {isSoundExist && (
-        <div className="border-2 border-white text-slate-700 bg-[#00D084] p-2 rounded-md absolute top-3 right-3 flex items-center gap-2 animate-bounce">
+        <div className="border-2 border-white text-slate-700 bg-[#00D084] p-2 rounded-md absolute top-3 right-3 flex items-center gap-2">
           <Speech />
           <span className="text-sm font-semibold">Audio presentation</span>
         </div>

@@ -13,9 +13,12 @@ const withScreensaver = (WrappedComponent: React.ComponentType<Props>) => {
     useEffect(() => {
       let currentId = 1;
       const intervalId = setInterval(() => {
+        if (currentId === 24) {
+          currentId++;
+        }
         setSelectedId(currentId);
         currentId = currentId >= maxFileNumber ? 1 : currentId + 1;
-      }, 10000);
+      }, 120000);
 
       return () => clearInterval(intervalId);
     }, [maxFileNumber]);

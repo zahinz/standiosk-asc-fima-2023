@@ -58,13 +58,13 @@ const SinglePoster = () => {
       <div className="h-[calc(100%_-_110px)] w-full p-6 relative group">
         <div
           onClick={handlePrevious}
-          className="h-full flex items-center absolute left-0 top-0 p-6 opacity-10 group-hover:opacity-100 transition-all cursor-pointer hover:bg-slate-100"
+          className="h-full flex items-center absolute left-0 top-0 p-6 opacity-10 group-hover:opacity-100 transition-all cursor-pointer hover:bg-slate-200"
         >
           <ChevronLeft size={48} />
         </div>
         <div
           onClick={handleNext}
-          className="h-full flex items-center absolute right-0 top-0 p-6 opacity-10 group-hover:opacity-100 transition-all cursor-pointer hover:bg-slate-100"
+          className="h-full flex items-center absolute right-0 top-0 p-6 opacity-10 group-hover:opacity-100 transition-all cursor-pointer hover:bg-slate-200"
         >
           <ChevronRight size={48} />
         </div>
@@ -102,7 +102,10 @@ const ActionBar = ({ id }: ActionBarProps) => {
   }, [id]);
   return (
     <div className="h-[110px] bg-[#1E4EAF] fixed bottom-0 left-0 right-0 p-6 flex justify-between items-center">
-      <div className="flex w-fit items-center">
+      <div className="flex gap-6 w-fit items-center">
+        <h1 className="flex justify-center items-center rounded-md border-4 border-white w-[100px] h-[70px] bg-[#00D084] font-semibold">
+          P{id}
+        </h1>
         <div className="w-[600px] flex items-center justify-start">
           <img className="w-[11%] -mr-4" src="/logo/imam.png" alt="IMAM logo" />
           <img className="w-[51%]" src="/logo/fima.png" alt="FIMA logo" />
