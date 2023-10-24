@@ -72,6 +72,7 @@ const SinglePoster = () => {
           className="h-full w-full object-contain"
           src={`/poster/jpg/${params.id}.jpg`}
           alt="poster"
+          loading="lazy"
         />
       </div>
       <ActionBar id={id} />

@@ -66,6 +66,7 @@ const Thumbnail = ({ id }: ThumbnailProps) => {
         className="group-hover:brightness-50 transition-all"
         src={url}
         alt="poster"
+        loading="lazy"
       />
       {isSoundExist && (
         <div className="border-2 border-white text-slate-700 bg-[#00D084] p-2 rounded-md absolute top-3 right-3 flex items-center gap-2 animate-bounce">
