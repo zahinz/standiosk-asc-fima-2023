@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { motion, useAnimation, AnimationControls } from "framer-motion";
 
 const Header = () => {
-  const controls = useAnimation();
   const [lastYPos, setLastYPos] = useState(0);
+  const [isHidden, setIsHidden] = useState(false);
   const [mouseTimer, setMouseTimer] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -11,12 +10,8 @@ const Header = () => {
       const yPos = window.scrollY;
       const isScrollingUp = yPos < lastYPos;
 
-      // Controls the Framer Motion animation
       if (Math.abs(yPos - lastYPos) > 3) {
-        controls.start({
-          y: isScrollingUp ? 0 : -160,
-          transition: { ease: "easeOut", duration: 0.2 },
-        });
+        setIsHidden(!isScrollingUp);
       }
 
       setLastYPos(yPos);
@@ -29,37 +24,28 @@ const Header = () => {
 
       setMouseTimer(
         setTimeout(() => {
-          controls.start({
-            y: 0,
-            transition: { ease: "easeOut", duration: 0.2 },
-          });
+          setIsHidden(false);
         }, 5000)
       );
     };
 
-    let requestId: number;
-    const onScroll = () => {
-      requestId = requestAnimationFrame(handleScroll);
-    };
-
-    window.addEventListener("scroll", onScroll, false);
+    window.addEventListener("scroll", handleScroll, false);
     window.addEventListener("mousemove", handleMouseMove, false);
 
     return () => {
-      cancelAnimationFrame(requestId);
       if (mouseTimer) {
         clearTimeout(mouseTimer);
       }
-      window.removeEventListener("scroll", onScroll, false);
+      window.removeEventListener("scroll", handleScroll, false);
       window.removeEventListener("mousemove", handleMouseMove, false);
     };
-  }, [lastYPos, controls, mouseTimer]);
+  }, [lastYPos, mouseTimer]);
 
   return (
-    <motion.div
-      className="w-screen h-auto bg-[#1E4EAF] sticky top-0 p-6 flex justify-between items-center z-50"
-      initial={{ y: 0 }}
-      animate={controls as AnimationControls}
+    <div
+      className={`w-screen h-auto bg-[#1E4EAF] sticky top-0 p-6 flex justify-between items-center z-50 transition-all ease-out duration-200 ${
+        isHidden ? "translate-y-[-160px]" : "translate-y-0"
+      }`}
     >
       <div className="w-3/5 space-y-2">
         <h1 className="font-bold text-white">
@@ -77,7 +63,7 @@ const Header = () => {
         <img className="w-[11%] -mr-4" src="/logo/imam.png" alt="IMAM logo" />
         <img className="w-[51%]" src="/logo/fima.png" alt="FIMA logo" />
       </div>
-    </motion.div>
+    </div>
   );
 };
 
