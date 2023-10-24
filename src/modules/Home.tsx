@@ -59,8 +59,8 @@ const Thumbnail = ({ id }: ThumbnailProps) => {
         alt="poster"
         loading="lazy"
       />
-      <div className="h-[40px] w-[40px] flex justify-center items-center font-bold border-2 bg-[#1E4EAF] text-white rounded-md absolute top-3 left-3">
-        {id}
+      <div className="h-[40px] w-[55px] flex justify-center items-center font-bold border-2 bg-[#1E4EAF] text-white rounded-md absolute top-3 left-3">
+        P{id}
       </div>
       {isSoundExist && (
         <div className="border-2 border-white text-slate-700 bg-[#00D084] p-2 rounded-md absolute top-3 right-3 flex items-center gap-2">
