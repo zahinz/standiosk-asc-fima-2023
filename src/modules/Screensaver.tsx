@@ -18,7 +18,7 @@ const withScreensaver = (WrappedComponent: React.ComponentType<Props>) => {
         }
         setSelectedId(currentId);
         currentId = currentId >= maxFileNumber ? 1 : currentId + 1;
-      }, 120000);
+      }, 600000);
 
       return () => clearInterval(intervalId);
     }, [maxFileNumber]);
@@ -39,12 +39,12 @@ const withScreensaver = (WrappedComponent: React.ComponentType<Props>) => {
 
     useEffect(() => {
       const activateScreensaver = () => setIsScreensaverActive(true);
-      const timeoutId = setTimeout(activateScreensaver, 120000);
+      const timeoutId = setTimeout(activateScreensaver, 600000);
 
       const resetScreensaver = () => {
         clearTimeout(timeoutId);
         setIsScreensaverActive(false);
-        setTimeout(activateScreensaver, 120000);
+        setTimeout(activateScreensaver, 600000);
       };
 
       window.addEventListener("mousemove", resetScreensaver);
